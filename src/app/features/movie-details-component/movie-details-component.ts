@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MovieService } from '../../core/services/movie-service';
 import { Movie } from '../../shared/models/movie-model';
@@ -11,21 +11,26 @@ import { AsyncPipe } from '@angular/common';
   templateUrl: './movie-details-component.html',
   styleUrl: './movie-details-component.css',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieDetailsComponent implements OnInit {
   public movieId: string | null = null;
   public movie: Movie | undefined;
-  public asyncMovie!: Observable<Movie>;
   public errorMessage: string | null = null;
-  constructor(private route: ActivatedRoute, private movieService: MovieService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private movieService: MovieService,
+    private cdr: ChangeDetectorRef
+  ) {}
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       const numericId = +idParam;
-      this.asyncMovie = this.movieService.getMovieById(numericId);
       this.movieService.getMovieById(numericId).subscribe({
         next: (data) => {
           this.movie = data;
+          this.cdr.markForCheck();
+
           console.log('MovieDetailsComponent : Données reçues !', data);
         },
         error: (err) => {
