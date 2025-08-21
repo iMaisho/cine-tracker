@@ -1,23 +1,27 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MovieService } from '../../core/services/movie-service';
 import { Movie } from '../../shared/models/movie-model';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-movie-details-component',
-  imports: [],
+  imports: [RouterLink, AsyncPipe],
   templateUrl: './movie-details-component.html',
   styleUrl: './movie-details-component.css',
 })
-export class MovieDetailsComponent {
+export class MovieDetailsComponent implements OnInit {
   public movieId: string | null = null;
   public movie: Movie | undefined;
+  public asyncMovie!: Observable<Movie>;
   public errorMessage: string | null = null;
   constructor(private route: ActivatedRoute, private movieService: MovieService) {}
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       const numericId = +idParam;
+      this.asyncMovie = this.movieService.getMovieById(numericId);
       this.movieService.getMovieById(numericId).subscribe({
         next: (data) => {
           this.movie = data;
@@ -32,5 +36,9 @@ export class MovieDetailsComponent {
         },
       });
     }
+  }
+  onError(event: any) {
+    const image = event.target as HTMLImageElement;
+    image.src = 'https://i.pinimg.com/736x/f3/9d/be/f39dbeaafd5e8e4ba3229e34f6aa0db0.jpg';
   }
 }
