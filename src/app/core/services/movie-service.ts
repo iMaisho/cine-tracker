@@ -7,7 +7,6 @@ import { map, Observable, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class MovieService {
-  public xTotalCount = 0;
   constructor(private http: HttpClient) {}
 
   public getMovies(page: number, limit: number): Observable<Movie[]> {

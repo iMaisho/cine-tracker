@@ -38,4 +38,9 @@ export class MovieListComponent implements OnInit {
       });
     }
   }
+
+  onError(event: any) {
+    const image = event.target as HTMLImageElement;
+    image.src = 'https://i.pinimg.com/736x/f3/9d/be/f39dbeaafd5e8e4ba3229e34f6aa0db0.jpg';
+  }
 }
