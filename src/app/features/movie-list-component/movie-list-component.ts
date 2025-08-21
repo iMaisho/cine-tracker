@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MovieService } from '../../core/services/movie-service';
 import { Movie } from '../../shared/models/movie-model';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -9,6 +9,8 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   templateUrl: './movie-list-component.html',
   styleUrl: './movie-list-component.css',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieListComponent implements OnInit {
   page = 1;
@@ -18,13 +20,14 @@ export class MovieListComponent implements OnInit {
   public isLoading: boolean = true;
   public errorMessage: string | null = null;
   total$!: Observable<number>;
-  constructor(private movieService: MovieService) {}
+  constructor(private movieService: MovieService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     {
       this.movieService.getMovies(this.page, this.limit).subscribe({
         next: (data) => {
           this.movies = data;
+          this.cdr.markForCheck();
           this.isLoading = false;
           console.log('MovieListComponent : Données reçues !', data);
         },

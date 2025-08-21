@@ -14,7 +14,10 @@ export class MovieService {
   public getMovies(page: number, limit: number): Observable<Movie[]> {
     return this.http
       .get<Movie[]>(this.url, { observe: 'response', params: { _page: page, _per_page: limit } })
-      .pipe(map((res: HttpResponse<any>) => res.body.data ?? []));
+      .pipe(
+        tap((res) => console.log(res)),
+        map((res: HttpResponse<any>) => res.body.data ?? [])
+      );
   }
 
   public getMovieById(id: number): Observable<Movie> {
