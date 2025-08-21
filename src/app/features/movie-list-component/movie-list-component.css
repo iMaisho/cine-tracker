@@ -1,11 +1,16 @@
 .movie-card {
   display: flex;
   flex-direction: column;
-  width: 300px;
   border: 1px black solid;
+  padding: 30px;
+  margin: 50px;
+  width: 200px;
 }
 
 .movie-poster {
+  height: 300px;
+  width: 200px;
+  object-fit: cover;
 }
 
 li {

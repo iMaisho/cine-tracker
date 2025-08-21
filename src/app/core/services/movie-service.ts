@@ -7,12 +7,17 @@ import { map, Observable, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class MovieService {
+  url = `http://localhost:3000/movies`;
+
   constructor(private http: HttpClient) {}
 
   public getMovies(page: number, limit: number): Observable<Movie[]> {
-    const url = `http://localhost:3000/movies`;
     return this.http
-      .get<Movie[]>(url, { observe: 'response', params: { _page: page, _per_page: limit } })
+      .get<Movie[]>(this.url, { observe: 'response', params: { _page: page, _per_page: limit } })
       .pipe(map((res: HttpResponse<any>) => res.body.data ?? []));
+  }
+
+  public getMovieById(id: number): Observable<Movie> {
+    return this.http.get<Movie>(this.url + `/${id}`);
   }
 }
