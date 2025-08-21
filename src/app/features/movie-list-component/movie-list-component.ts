@@ -9,6 +9,7 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   templateUrl: './movie-list-component.html',
   styleUrl: './movie-list-component.css',
+  standalone: true,
 })
 export class MovieListComponent implements OnInit {
   page = 1;

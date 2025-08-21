@@ -1,7 +1,9 @@
 <button><a [routerLink]="['/movies']">Retour à la liste</a></button><br />
 <img style="height: 200px" [src]="movie?.poster" (error)="onError($event)" />
 
-<h2>{{ (movie | async)?.title }} - {{ movie?.year }}</h2>
+<h2>{{ movie?.title }} - {{ movie?.year }}</h2>
 <h3>by {{ movie?.director }}</h3>
 
 <h3>{{ movie?.synopsis }}</h3>
+
+<h3 style="color: red">{{ (asyncMovie | async)?.title }}</h3>

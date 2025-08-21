@@ -10,6 +10,7 @@ import { AsyncPipe } from '@angular/common';
   imports: [RouterLink, AsyncPipe],
   templateUrl: './movie-details-component.html',
   styleUrl: './movie-details-component.css',
+  standalone: true,
 })
 export class MovieDetailsComponent implements OnInit {
   public movieId: string | null = null;
