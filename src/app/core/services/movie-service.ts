@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Movie } from '../../shared/models/movie-model';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { map, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MovieService {
+  public xTotalCount = 0;
   constructor(private http: HttpClient) {}
 
   public getMovies(page: number, limit: number): Observable<Movie[]> {
-    console.log("MovieService: Appel de l'API pour récupérer les films");
-    return this.http.get<Movie[]>(`http://localhost:3000/movies?_page=${page}&_limit=${limit}`);
+    const url = `http://localhost:3000/movies`;
+    return this.http
+      .get<Movie[]>(url, { observe: 'response', params: { _page: page, _per_page: limit } })
+      .pipe(map((res: HttpResponse<any>) => res.body.data ?? []));
   }
 }
