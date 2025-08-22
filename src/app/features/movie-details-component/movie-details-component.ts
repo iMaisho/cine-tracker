@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MovieService } from '../../core/services/movie-service';
 import { Movie } from '../../shared/models/movie-model';
 import { Observable } from 'rxjs';
@@ -7,7 +7,7 @@ import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-movie-details-component',
-  imports: [RouterLink, AsyncPipe],
+  imports: [RouterLink],
   templateUrl: './movie-details-component.html',
   styleUrl: './movie-details-component.css',
   standalone: true,
@@ -20,7 +20,8 @@ export class MovieDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -46,5 +47,21 @@ export class MovieDetailsComponent implements OnInit {
   onError(event: any) {
     const image = event.target as HTMLImageElement;
     image.src = 'https://i.pinimg.com/736x/f3/9d/be/f39dbeaafd5e8e4ba3229e34f6aa0db0.jpg';
+  }
+
+  onDelete(id: number) {
+    this.movieService.deleteMovieById(id).subscribe({
+      next: () => {
+        this.cdr.markForCheck();
+        this.router.navigate(['/movies']);
+      },
+      error: (err) => {
+        this.errorMessage = 'Impossible de supprimer ce film.';
+        console.error('Une erreur est survenue:', err);
+      },
+      complete: () => {
+        console.log('Le film a bien été supprimé.');
+      },
+    });
   }
 }

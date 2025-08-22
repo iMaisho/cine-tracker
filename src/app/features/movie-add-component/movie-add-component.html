@@ -1,0 +1,51 @@
+<form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="title">Titre du film</label>
+    <br />
+    <input id="title" type="text" formControlName="title" />
+    @if (movieForm.get('title')?.invalid && movieForm.get('title')?.touched) {
+    <div>
+      @if (movieForm.get('title')?.hasError('required')){
+      <small style="color: red">Ce champ est obligatoire</small>
+      }
+    </div>
+    }
+    <br />
+    <br />
+    <label for="director">Réalisateur</label>
+    <br />
+    <input id="director" type="text" formControlName="director" />
+    @if (movieForm.get('director')?.invalid && movieForm.get('director')?.touched) {
+    <div>
+      @if (movieForm.get('director')?.hasError('required')){
+      <small style="color: red">Ce champ est obligatoire</small>
+      }
+    </div>
+    }
+    <br />
+    <br />
+    <label for="year">Année de sortie</label>
+    <br />
+    <input id="year" type="number" formControlName="year" />
+    @if (movieForm.get('year')?.invalid && movieForm.get('year')?.touched) {
+    <div>
+      @if (movieForm.get('year')?.hasError('required')){
+      <small style="color: red">Ce champ est obligatoire</small>
+      }
+    </div>
+    }
+    <br />
+    <br />
+    <label for="poster">Lien de l'affiche du film</label>
+    <br />
+    <input id="poster" type="text" formControlName="poster" />
+    <br />
+    <br />
+    <label for="synopsis">Synopsis</label>
+    <br />
+    <input id="synopsis" type="textarea" formControlName="synopsis" />
+    <br />
+    <br />
+    <button type="submit">Valider</button>
+  </div>
+</form>

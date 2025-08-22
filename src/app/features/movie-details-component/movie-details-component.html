@@ -5,3 +5,5 @@
 <h3>by {{ movie?.director }}</h3>
 
 <h3>{{ movie?.synopsis }}</h3>
+
+<button style="color: red" (click)="onDelete(movie!.id)">Supprimer ce film</button>

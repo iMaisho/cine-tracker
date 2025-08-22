@@ -23,4 +23,12 @@ export class MovieService {
   public getMovieById(id: number): Observable<Movie> {
     return this.http.get<Movie>(this.url + `/${id}`);
   }
+
+  public postMovie(movie: Movie): Observable<Movie> {
+    return this.http.post<Movie>(this.url, movie);
+  }
+
+  public deleteMovieById(id: number): Observable<Movie> {
+    return this.http.delete<Movie>(this.url + `/${id}`);
+  }
 }
