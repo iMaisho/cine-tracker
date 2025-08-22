@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MovieService } from '../../core/services/movie-service';
@@ -16,7 +15,6 @@ export class MovieAddComponent {
   public errorMessage: string | null = null;
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
     private movieService: MovieService // private movie: Movie
   ) {
     this.movieForm = this.fb.group({

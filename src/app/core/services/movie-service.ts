@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Movie } from '../../shared/models/movie-model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { map, Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,13 +11,13 @@ export class MovieService {
 
   constructor(private http: HttpClient) {}
 
-  public getMovies(page: number, limit: number): Observable<Movie[]> {
-    return this.http
-      .get<Movie[]>(this.url, { observe: 'response', params: { _page: page, _per_page: limit } })
-      .pipe(
-        tap((res) => console.log(res)),
-        map((res: HttpResponse<any>) => res.body.data ?? [])
-      );
+  public getMovies(page: number, limit: number, searchTerm?: string): Observable<Movie[]> {
+    const params: any = { _page: page, _limit: limit };
+    if (searchTerm && searchTerm.trim().length > 0) {
+      params.title = searchTerm.trim();
+    }
+
+    return this.http.get<Movie[]>(this.url, { params });
   }
 
   public getMovieById(id: number): Observable<Movie> {
